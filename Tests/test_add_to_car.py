@@ -1,6 +1,6 @@
 import time
 import re
-from ..Objects import Product_page
+from Objects.Product_page import ProductPage 
 
 def test_add_car(driver):
     """
