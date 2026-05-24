@@ -1,0 +1,20 @@
+
+.idea/
+.vscode/
+.pytest_cache/
+
+# Environment
+.env
+.env
+
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env
+# Virtual environments (si es necesario)
+venv/
+env/
+.venv/
+
