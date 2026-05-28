@@ -12,6 +12,7 @@ def test_add_car(driver):
     add_car.open()
     
     add_car.move_computer()
+    add_car.move_destokp()
     
     print("Relleno formulario y registro...")
    # actual_url= add_car.add_to_car_product()

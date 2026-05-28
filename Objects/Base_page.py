@@ -3,7 +3,9 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 from faker import Faker
+
 
 class BasePage:
     
@@ -51,7 +53,24 @@ class BasePage:
 
     def _open_url(self, url: str):
         self._driver.get(url)
+    
+    def _skip_cloudflare(self):
 
+        try:
+            print("Verificando si aparece Cloudflare...")
+            WebDriverWait(self._driver, 15).until(
+                ec.presence_of_element_located((By.TAG_NAME, "iframe")))
+            iframe = self._driver.find_element(By.TAG_NAME, "iframe")
+            self._driver.switch_to.frame(iframe)
+            checkbox = WebDriverWait(self._driver, 10).until(
+                ec.element_to_be_clickable(
+                    (By.CSS_SELECTOR, "input[type='checkbox']")))
+            checkbox.click()
+            print("Cloudflare resuelto correctamente.")
+            self._driver.switch_to.default_content()
+        except Exception as e:
+            print(f"Cloudflare no apareció o no pudo resolverse: {e}")
+                 
     @property
     def current_url(self) -> str:
         return self._driver.current_url

@@ -9,6 +9,7 @@ class ProductPage(BasePage):
 
     locators = {
         "product_computers":(By.XPATH,"/html[@class='html-home-page']/body/div[@class='master-wrapper-page']/div[@class='header-menu']/nav[@class='menu-container menu-dropdown']/div[@class='menu']/div[@class='menu__item menu-dropdown'][1]/div[@class='menu__item-toggle']/a[@class='menu__link']"),
+        "image_destokp":(By.XPATH,"//main[@id='main']/div[@class='master-column-wrapper']/section[@class='center-2']/div[@class='page category-page']/div[@class='page-body']/div[@class='category-grid sub-category-grid']/div[@class='item-grid']/div[@class='item-box'][1]/div[@class='sub-category-item']/div[@class='picture']/a/img/@src"),
         "product_name": (By.XPATH, "//main[@id='main']/div[@class='master-column-wrapper']/section[@class='center-2']/div[@class='page category-page']/div[@class='page-body']/div[@class='products-container']/div[@class='products-wrapper']/div[@class='product-grid']/div[@class='item-grid']/div[@class='item-box'][1]/article[@class='product-item']/div[@class='details']/h2[@class='product-title']/a"),
         "add_to_car_button": (By.XPATH, "//main[@id='main']/div[@class='master-column-wrapper']/section[@class='center-2']/div[@class='page category-page']/div[@class='page-body']/div[@class='products-container']/div[@class='products-wrapper']/div[@class='product-grid']/div[@class='item-grid']/div[@class='item-box'][1]/article[@class='product-item']/div[@class='details']/div[@class='add-info']/div[@class='buttons']/button[@class='button-2 product-box-add-to-cart-button']"),
         "product_price": (By.XPATH, "//main[@id='main']/div[@class='master-column-wrapper']/section[@class='center-2']/div[@class='page category-page']/div[@class='page-body']/div[@class='products-container']/div[@class='products-wrapper']/div[@class='product-grid']/div[@class='item-grid']/div[@class='item-box'][1]/article[@class='product-item']/div[@class='details']/div[@class='add-info']/div[@class='prices']/span[@class='price actual-price']"),
@@ -30,8 +31,12 @@ class ProductPage(BasePage):
 
     def move_computer(self):
         self._click(self.locators["product_computers"])
-        self._wait_navegator(30)
+        self._skip_cloudflare()
     
+    def move_destokp(self):
+        self._click(self.locators["image_destokp"])
+        self._skip_cloudflare()
+        
     def add_to_car_product(self):
         url_old =self.current_url
         self._get_text(self.locators["product_name"])   
