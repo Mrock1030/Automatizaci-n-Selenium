@@ -45,8 +45,7 @@ def test_register_negative_user(driver):
     # 5. Verificar el resultado (Buscamos mensajes clave de éxito)
     success_message = driver.page_source
     
-    # Buscamos mensajes típicos de éxito en la demo (depende del título del formulario)
-    # Buscamos 'Producto añadido' o 'Usuario registrado' o mensajes similares
+
     success_faild= r"(First name is required)"
     assert re.search(success_faild, success_message, re.IGNORECASE), \
         f"El registro no fue procesado correctamente. " \

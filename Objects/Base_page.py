@@ -3,10 +3,11 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.common.exceptions import NoSuchElementException
-
+from faker import Faker
 
 class BasePage:
-
+    
+    faker = Faker()
     def __init__(self, driver: WebDriver):
         self._driver = driver
 
@@ -17,6 +18,18 @@ class BasePage:
         wait = WebDriverWait(self._driver, timeout)
         return wait.until(ec.visibility_of_element_located(locator))
 
+    def _wait_for_url_contains(self, partial_url: str, timeout: int = 10):
+        WebDriverWait(self._driver, timeout).until(
+        ec.url_contains(partial_url))
+        
+    def _wait_navegator(self,timeout:int=50):
+        wait = WebDriverWait(self._driver, timeout)
+        
+    def _click_with_scroll(self, locator: tuple, timeout: int = 10):
+        element = self._wait_until_element_is_visible(locator, timeout)
+        self._driver.execute_script("arguments[0].scrollIntoView(true);", element)
+        element.click()
+        
     def _type(self, locator: tuple, text: str, timeout: int = 10):
         self._wait_until_element_is_visible(locator, timeout)
         self._find(locator).clear()

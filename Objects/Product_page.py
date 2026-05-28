@@ -5,9 +5,10 @@ from Objects.Base_page import BasePage
 
 class ProductPage(BasePage):
 
-    __url = 'https://demo.nopcommerce.com/desktops'
+    __url ='https://demo.nopcommerce.com/'
 
     locators = {
+        "product_computers":(By.XPATH,"/html[@class='html-home-page']/body/div[@class='master-wrapper-page']/div[@class='header-menu']/nav[@class='menu-container menu-dropdown']/div[@class='menu']/div[@class='menu__item menu-dropdown'][1]/div[@class='menu__item-toggle']/a[@class='menu__link']"),
         "product_name": (By.XPATH, "//main[@id='main']/div[@class='master-column-wrapper']/section[@class='center-2']/div[@class='page category-page']/div[@class='page-body']/div[@class='products-container']/div[@class='products-wrapper']/div[@class='product-grid']/div[@class='item-grid']/div[@class='item-box'][1]/article[@class='product-item']/div[@class='details']/h2[@class='product-title']/a"),
         "add_to_car_button": (By.XPATH, "//main[@id='main']/div[@class='master-column-wrapper']/section[@class='center-2']/div[@class='page category-page']/div[@class='page-body']/div[@class='products-container']/div[@class='products-wrapper']/div[@class='product-grid']/div[@class='item-grid']/div[@class='item-box'][1]/article[@class='product-item']/div[@class='details']/div[@class='add-info']/div[@class='buttons']/button[@class='button-2 product-box-add-to-cart-button']"),
         "product_price": (By.XPATH, "//main[@id='main']/div[@class='master-column-wrapper']/section[@class='center-2']/div[@class='page category-page']/div[@class='page-body']/div[@class='products-container']/div[@class='products-wrapper']/div[@class='product-grid']/div[@class='item-grid']/div[@class='item-box'][1]/article[@class='product-item']/div[@class='details']/div[@class='add-info']/div[@class='prices']/span[@class='price actual-price']"),
@@ -25,12 +26,23 @@ class ProductPage(BasePage):
 
     def open(self):
         self._open_url(self.__url)  
+        
 
+    def move_computer(self):
+        self._click(self.locators["product_computers"])
+        self._wait_navegator(30)
+    
     def add_to_car_product(self):
+        url_old =self.current_url
         self._get_text(self.locators["product_name"])   
         self._get_text(self.locators["product_price"])
         self._click(self.locators["add_to_car_button"])
-        return self.current_url  
+        self._wait_for_url_contains(url_old, timeout=10)
+        self._wait_navegator(5)
+        print(f" esta es la url{self.current_url}")
+        return self.current_url
+        
+        
 
     def add_to_cart_with_options(self, count: int = 3):
         self._click(self.locators["add_disk"])
