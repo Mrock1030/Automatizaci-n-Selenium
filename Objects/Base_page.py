@@ -55,22 +55,25 @@ class BasePage:
         self._driver.get(url)
     
     def _skip_cloudflare(self):
-
         try:
             print("Verificando si aparece Cloudflare...")
-            WebDriverWait(self._driver, 15).until(
-                ec.presence_of_element_located((By.TAG_NAME, "iframe")))
-            iframe = self._driver.find_element(By.TAG_NAME, "iframe")
-            self._driver.switch_to.frame(iframe)
-            checkbox = WebDriverWait(self._driver, 10).until(
+            iframes = self._driver.find_elements(By.TAG_NAME, "iframe")
+            if not iframes:
+                print("Cloudflare no apareció.")
+                return
+            self._driver.switch_to.frame(iframes[0])
+
+            checkbox = WebDriverWait(self._driver, 30).until(
                 ec.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "input[type='checkbox']")))
+                    (By.XPATH,'//*[@id="challenge-stage"]/div/label/input')) )
             checkbox.click()
             print("Cloudflare resuelto correctamente.")
+            # Volver al contenido principal
             self._driver.switch_to.default_content()
         except Exception as e:
-            print(f"Cloudflare no apareció o no pudo resolverse: {e}")
-                 
+            print(f"No se pudo resolver Cloudflare: {e}")
+            self._driver.switch_to.default_content()
+                    
     @property
     def current_url(self) -> str:
         return self._driver.current_url
